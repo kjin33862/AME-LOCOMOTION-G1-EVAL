@@ -655,3 +655,55 @@ class G1RoughEnvCfg_PLAY(G1RoughEnvCfg):
         self.events.base_external_force_torque = None
         self.events.push_robot = None
 
+
+# Play variants with a single-terrain tile (G1RoughEnvCfg_PLAY above keeps stakes as the default).
+# The robot spawns at the tile center: on pyramid_stairs it walks down, on the inverted pyramid it walks up.
+PLAY_SUB_TERRAINS = {
+    "stairs_down": {
+        "pyramid_stairs": terrain_gen.MeshPyramidStairsTerrainCfg(
+            proportion=1.0,
+            step_height_range=(0.15, 0.15),
+            step_width=0.4,
+            platform_width=3.0,
+            border_width=1.0,
+            holes=False,
+        ),
+    },
+    "stairs_up": {
+        "pyramid_stairs_inv": terrain_gen.MeshInvertedPyramidStairsTerrainCfg(
+            proportion=1.0,
+            step_height_range=(0.15, 0.15),
+            step_width=0.3,
+            platform_width=3.0,
+            border_width=1.0,
+            holes=False,
+        ),
+    },
+    "steppingstones": {
+        "hf_steppingstones": terrain_gen.HfSteppingStonesTerrainCfg(
+            proportion=1.0, stone_height_max=0.0, stone_width_range=(0.3, 0.3), stone_distance_range=(0.2, 0.2), platform_width=2.0,
+            holes_depth=-2.0, border_width=0.25
+        ),
+    },
+}
+
+
+@configclass
+class G1RoughEnvCfg_PLAY_STAIRS_DOWN(G1RoughEnvCfg_PLAY):
+    def __post_init__(self):
+        super().__post_init__()
+        self.scene.terrain.terrain_generator.sub_terrains = PLAY_SUB_TERRAINS["stairs_down"]
+
+
+@configclass
+class G1RoughEnvCfg_PLAY_STAIRS_UP(G1RoughEnvCfg_PLAY):
+    def __post_init__(self):
+        super().__post_init__()
+        self.scene.terrain.terrain_generator.sub_terrains = PLAY_SUB_TERRAINS["stairs_up"]
+
+
+@configclass
+class G1RoughEnvCfg_PLAY_STEPPINGSTONES(G1RoughEnvCfg_PLAY):
+    def __post_init__(self):
+        super().__post_init__()
+        self.scene.terrain.terrain_generator.sub_terrains = PLAY_SUB_TERRAINS["steppingstones"]

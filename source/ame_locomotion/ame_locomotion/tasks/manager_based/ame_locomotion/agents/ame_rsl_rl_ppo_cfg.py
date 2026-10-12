@@ -36,3 +36,15 @@ class G1AMEPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         desired_kl=0.01,
         max_grad_norm=1.0,
     )
+
+
+# TEMP (ame2 play): policy with AME2-style global context
+@configclass
+class G1AMEGlobalActorCriticCfg(RslRlPpoActorCriticCfg):
+    attach_global: bool = True
+
+
+@configclass
+class G1AMEGlobalPPORunnerCfg(G1AMEPPORunnerCfg):
+    def __post_init__(self):
+        self.policy = G1AMEGlobalActorCriticCfg(**self.policy.to_dict())

@@ -72,3 +72,12 @@ tests/
 
 attn_vis/
 attention_weights.npy
+
+# Evaluation outputs (this fork): keep only the aggregated sweep table and plots
+eval_results/*
+!eval_results/sweep_summary.csv
+!eval_results/sweep_plots/
+
+# Attention-weight dumps written by play.py
+attention_weights*.npy
+notes/
